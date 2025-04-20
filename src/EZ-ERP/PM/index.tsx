@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { orderService, taskService, authService } from '../services/api';
 import { useSelector } from 'react-redux';
 import type { Order } from '../types';
-import axios from 'axios';
+/* import axios from 'axios'; */
 
 interface Task {
     _id: string;
@@ -313,7 +313,7 @@ export default function ProjectManagement() {
         }
     };
 
-    const handleMarkTaskComplete = async (taskId: string) => {
+    /* const handleMarkTaskComplete = async (taskId: string) => {
         try {
             await taskService.markAsCompleted(taskId);
             // Update local state after successful completion
@@ -321,8 +321,8 @@ export default function ProjectManagement() {
         } catch (err: any) {
             setTaskError(err.response?.data?.message || 'Failed to mark task as completed');
         }
-    };
-
+    };ß
+ */
     const getStatusBadge = (status: string) => {
         switch (status) {
             case 'pending':
@@ -379,7 +379,6 @@ export default function ProjectManagement() {
 
     return (
         <div className="container mt-4">
-            <h1>Project Management</h1>
 
             {error && <Alert variant="danger">{error}</Alert>}
 

@@ -27,10 +27,12 @@ export default function Orders() {
     }
 
     return (
-        <OrderTable
-            onOrderClick={handleOrderClick}
-            onCreateOrder={handleCreateOrder}
-            canManageOrders={canManageOrders}
-        />
+        <div className="container mt-10">
+            <OrderTable
+                onOrderClick={handleOrderClick}
+                onCreateOrder={handleCreateOrder}
+                canManageOrders={canManageOrders}
+            />
+        </div>
     );
 }

@@ -85,7 +85,7 @@ export default function OrderTable({ onOrderClick, onCreateOrder, canManageOrder
                         <th>Customer</th>
                         <th>Items</th>
                         <th>Due Date</th>
-                        <th>Description</th>
+                        {/* <th>Description</th> */}
                     </tr>
                 </thead>
                 <tbody>
@@ -111,7 +111,7 @@ export default function OrderTable({ onOrderClick, onCreateOrder, canManageOrder
                                 </ul>
                             </td>
                             <td>{new Date(order.dueDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</td>
-                            <td>{order.description}</td>
+                            {/* <td>{order.description}</td> */}
                         </tr>
                     ))}
                 </tbody>

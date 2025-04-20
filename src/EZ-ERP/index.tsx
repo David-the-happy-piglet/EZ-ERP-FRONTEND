@@ -20,18 +20,18 @@ export default function EZ_ERP() {
             <WelcomeBadge />
             <MainPageNav />
             <Routes>
-                <Route path="EZERP/Overview/*" element={<Overview />} />
-                <Route path="/" element={<Navigate to="EZERP/Overview" />} />
-                <Route path="EZERP/Orders/*" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
-                <Route path="EZERP/Orders/:orderNumber" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
-                <Route path="EZERP/Orders/:orderNumber/edit" element={<ProtectedRoute><OrderEdit /></ProtectedRoute>} />
-                <Route path="EZERP/Orders/new" element={<ProtectedRoute><OrderCreate /></ProtectedRoute>} />
-                <Route path="EZERP/PM" element={<ProtectedRoute><ProjectManagement /></ProtectedRoute>} />
-                <Route path="EZERP/PM/:orderNumber/Tasks" element={<ProtectedRoute><Tasks /></ProtectedRoute>} />
-                <Route path="EZERP/Customers/*" element={<ProtectedRoute><Customer /></ProtectedRoute>} />
-                <Route path="EZERP/Finance/*" element={<ProtectedRoute><Finance /></ProtectedRoute>} />
-                <Route path="EZERP/Account/*" element={<ProtectedRoute><Account /></ProtectedRoute>} />
-                <Route path="EZERP/HR/*" element={<ProtectedRoute><HumanResource /></ProtectedRoute>} />
+                <Route path="Overview/*" element={<Overview />} />
+                <Route path="" element={<Navigate to="Overview" />} />
+                <Route path="Orders/*" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+                <Route path="Orders/:orderNumber" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+                <Route path="Orders/:orderNumber/edit" element={<ProtectedRoute><OrderEdit /></ProtectedRoute>} />
+                <Route path="Orders/new" element={<ProtectedRoute><OrderCreate /></ProtectedRoute>} />
+                <Route path="PM" element={<ProtectedRoute><ProjectManagement /></ProtectedRoute>} />
+                <Route path="PM/:orderNumber/Tasks" element={<ProtectedRoute><Tasks /></ProtectedRoute>} />
+                <Route path="Customers/*" element={<ProtectedRoute><Customer /></ProtectedRoute>} />
+                <Route path="Finance/*" element={<ProtectedRoute><Finance /></ProtectedRoute>} />
+                <Route path="Account/*" element={<ProtectedRoute><Account /></ProtectedRoute>} />
+                <Route path="HR/*" element={<ProtectedRoute><HumanResource /></ProtectedRoute>} />
             </Routes>
         </div>
     )

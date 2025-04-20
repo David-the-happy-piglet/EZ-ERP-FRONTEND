@@ -5,9 +5,9 @@ import { useSelector } from 'react-redux';
 import { taskService, messageService } from '../services/api';
 
 // Generate a random ID for messages
-const generateMessageId = () => {
+/* const generateMessageId = () => {
     return `MSG-${Math.random().toString(36).substring(2, 10)}`;
-};
+}; */
 
 interface Task {
     _id: string;
