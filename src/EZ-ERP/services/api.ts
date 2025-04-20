@@ -90,6 +90,14 @@ export const orderService = {
             companyName: string;
             name: string;
             email: string;
+            phone: string;
+            address: {
+                street: string;
+                city: string;
+                state: string;
+                country: string;
+                zipCode: string;
+            };
         };
         items: Array<{
             productId: string;
@@ -98,8 +106,17 @@ export const orderService = {
             price: number;
         }>;
         totalAmount: number;
-        status?: 'pending' | 'processing' | 'completed' | 'cancelled';
-        paymentStatus?: 'pending' | 'paid' | 'overdue';
+        status: 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
+        paymentStatus: 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED';
+        shippingAddress: {
+            street: string;
+            city: string;
+            state: string;
+            country: string;
+            zipCode: string;
+        };
+        dueDate: string;
+        notes?: string;
     }) => api.post('/orders', orderData),
     update: (id: string, orderData: {
         orderNumber?: string;
@@ -116,8 +133,17 @@ export const orderService = {
             price?: number;
         }>;
         totalAmount?: number;
-        status?: 'pending' | 'processing' | 'completed' | 'cancelled';
-        paymentStatus?: 'pending' | 'paid' | 'overdue';
+        status?: 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
+        paymentStatus?: 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED';
+        dueDate?: string;
+        shippingAddress?: {
+            street?: string;
+            city?: string;
+            state?: string;
+            country?: string;
+            zipCode?: string;
+        };
+        notes?: string;
     }) => api.put(`/orders/${id}`, orderData),
     updateStatus: (id: string, status: 'pending' | 'processing' | 'completed' | 'cancelled') =>
         api.patch(`/orders/${id}/status`, { status }),
