@@ -36,6 +36,9 @@ interface UserFormData {
 
 export default function HumanResource() {
     const [users, setUsers] = useState<User[]>([]);
+    const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedRole, setSelectedRole] = useState<UserRole | 'ALL'>('ALL');
     const [showModal, setShowModal] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [error, setError] = useState('');
@@ -56,10 +59,33 @@ export default function HumanResource() {
         fetchUsers();
     }, []);
 
+    useEffect(() => {
+        let filtered = users;
+
+        // Apply role filter
+        if (selectedRole !== 'ALL') {
+            filtered = filtered.filter(user => user.role === selectedRole);
+        }
+
+        // Apply search filter
+        if (searchTerm.trim() !== '') {
+            const term = searchTerm.toLowerCase();
+            filtered = filtered.filter(user =>
+                user.username.toLowerCase().includes(term) ||
+                `${user.firstName} ${user.lastName}`.toLowerCase().includes(term) ||
+                user.email.toLowerCase().includes(term) ||
+                user.role.toLowerCase().includes(term)
+            );
+        }
+
+        setFilteredUsers(filtered);
+    }, [searchTerm, selectedRole, users]);
+
     const fetchUsers = async () => {
         try {
             const response = await authService.getAllUsers();
             setUsers(response.data as User[]);
+            setFilteredUsers(response.data as User[]);
         } catch (err: any) {
             setError(err.response?.data?.message || 'Failed to fetch users');
         }
@@ -151,11 +177,37 @@ export default function HumanResource() {
 
             {error && <Alert variant="danger" className="mb-3">{error}</Alert>}
 
-            {canManageUsers && (
-                <Button variant="primary" className="mb-3" onClick={() => handleShowModal()}>
-                    Add New User
-                </Button>
-            )}
+            <div className="d-flex justify-content-between align-items-center mb-3">
+                <div className="d-flex gap-2">
+                    <Form.Control
+                        type="text"
+                        placeholder="Search by username, name, email, or role..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        style={{ width: '300px' }}
+                    />
+                    <Form.Select
+                        value={selectedRole}
+                        onChange={(e) => setSelectedRole(e.target.value as UserRole | 'ALL')}
+                        style={{ width: '200px' }}
+                    >
+                        <option value="ALL">All Roles</option>
+                        <option value={UserRole.ADMIN}>Admin</option>
+                        <option value={UserRole.MKT}>Marketing</option>
+                        <option value={UserRole.MACHINING}>Machining</option>
+                        <option value={UserRole.QC}>Quality Control</option>
+                        <option value={UserRole.CHEMIST}>Chemist</option>
+                        <option value={UserRole.FINANCE}>Finance</option>
+                        <option value={UserRole.HR}>Human Resources</option>
+                        <option value={UserRole.GUEST}>Guest</option>
+                    </Form.Select>
+                </div>
+                {canManageUsers && (
+                    <Button variant="primary" onClick={() => handleShowModal()}>
+                        Add New User
+                    </Button>
+                )}
+            </div>
 
             <Table striped bordered hover>
                 <thead>
@@ -168,7 +220,7 @@ export default function HumanResource() {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map(user => (
+                    {filteredUsers.map(user => (
                         <tr key={user._id}>
                             <td>{user.username}</td>
                             <td>{`${user.firstName} ${user.lastName}`}</td>

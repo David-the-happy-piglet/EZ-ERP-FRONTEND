@@ -12,7 +12,7 @@ export default function MainPageNav() {
         { label: "Customers", path: "/EZERP/Customers", icon: LiaCogSolid },
         { label: "Finance", path: "/EZERP/Finance", icon: LiaCogSolid },
         { label: "Account", path: "/EZERP/Account", icon: LiaCogSolid },
-        { label: "HR", path: "/EZERP/HR", icon: LiaCogSolid }
+        { label: "People", path: "/EZERP/HR", icon: LiaCogSolid }
     ];
 
     return (

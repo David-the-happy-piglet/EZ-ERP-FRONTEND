@@ -6,6 +6,8 @@ import { useSelector } from 'react-redux';
 
 export default function Customer() {
     const [customers, setCustomers] = useState<Customer[]>([]);
+    const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([]);
+    const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
@@ -32,11 +34,24 @@ export default function Customer() {
         fetchCustomers();
     }, []);
 
+    useEffect(() => {
+        if (searchTerm.trim() === '') {
+            setFilteredCustomers(customers);
+        } else {
+            const filtered = customers.filter(customer =>
+                customer.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                customer.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setFilteredCustomers(filtered);
+        }
+    }, [searchTerm, customers]);
+
     const fetchCustomers = async () => {
         try {
             const response = await customerService.getAll();
             if (Array.isArray(response.data)) {
                 setCustomers(response.data as Customer[]);
+                setFilteredCustomers(response.data as Customer[]);
             } else {
                 throw new Error('Invalid response format');
             }
@@ -127,11 +142,20 @@ export default function Customer() {
 
             {error && <Alert variant="danger">{error}</Alert>}
 
-            {canManageCustomers && (
-                <Button variant="primary" className="mb-3" onClick={() => handleShowModal()}>
-                    Add New Customer
-                </Button>
-            )}
+            <div className="d-flex justify-content-between align-items-center mb-3">
+                <Form.Control
+                    type="text"
+                    placeholder="Search by company name or contact name..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{ width: '300px' }}
+                />
+                {canManageCustomers && (
+                    <Button variant="primary" onClick={() => handleShowModal()}>
+                        Add New Customer
+                    </Button>
+                )}
+            </div>
 
             <Table striped bordered hover>
                 <thead>
@@ -143,7 +167,7 @@ export default function Customer() {
                     </tr>
                 </thead>
                 <tbody>
-                    {customers.map((customer) => (
+                    {filteredCustomers.map((customer) => (
                         <tr key={customer._id}>
                             <td>{customer._id?.toString() || '-'}</td>
                             <td>{customer.companyName}</td>
