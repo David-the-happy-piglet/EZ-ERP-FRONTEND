@@ -1,9 +1,12 @@
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-export default function ProtectedRoute({ children }: { children: any }) {
-    const { currentUser } = useSelector((state: any) => state.accountReducer);
+
+export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
+    const currentUser = useSelector((state: any) => state.accountReducer?.currentUser);
+
     if (!currentUser) {
-        return <Navigate to="/EZERP/Login" />;
+        return <Navigate to="/Login" replace />;
     }
-    return children;
+
+    return <>{children}</>;
 }

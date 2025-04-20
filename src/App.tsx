@@ -6,17 +6,15 @@ import EZ_ERP from './EZ-ERP'
 import Login from './EZ-ERP/Login'
 
 function App() {
-
-
   return (
     <HashRouter>
       <Provider store={store}>
         <div>
           <Routes>
-            <Route path="/" element={<Navigate to="/EZERP/Overview" />} />
-            <Route path="EZERP/*" element={<EZ_ERP />} />
-            <Route path="EZERP/Login" element={<Login />} />
-
+            <Route path="/" element={<Navigate to="/Login" />} />
+            <Route path="/Login" element={<Login />} />
+            <Route path="/Overview" element={<EZ_ERP />} />
+            <Route path="/*" element={<EZ_ERP />} />
           </Routes>
         </div>
       </Provider>
