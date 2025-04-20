@@ -54,7 +54,7 @@ export const authService = {
         api.post('/auth/register', userData),
     changePassword: (data: { oldPassword: string; newPassword: string }) =>
         api.post('/auth/change-password', data),
-    getCurrentUser: () => api.get('/auth/current-user'),
+    getCurrentUser: () => api.get('/auth/profile'),
     // User management methods
     getAllUsers: () => api.get('/users'),
     createUser: (userData: {

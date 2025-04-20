@@ -1,7 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Form, Button, Card, Row, Col, Alert } from 'react-bootstrap';
+import { Form, Button, Card, Row, Col, Alert, Spinner } from 'react-bootstrap';
 import { setCurrentUser } from './reducer';
+import { authService } from '../services/api';
+
+interface UserProfileResponse {
+    user?: {
+        id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        role: string;
+    };
+}
 
 export default function Profile() {
     const dispatch = useDispatch();
@@ -10,24 +22,25 @@ export default function Profile() {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
-        email: '',
-        phone: '',
-        department: '',
-        position: ''
+        email: ''
+        /*         phone: '',
+                department: '',
+                position: '' */
     });
 
     const [isEditing, setIsEditing] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (currentUser) {
             setFormData({
                 firstName: currentUser.firstName || '',
                 lastName: currentUser.lastName || '',
-                email: currentUser.email || '',
-                phone: currentUser.phone || '',
-                department: currentUser.department || '',
-                position: currentUser.position || ''
+                email: currentUser.email || ''
+                /*                 phone: currentUser.phone || '',
+                                department: currentUser.department || '',
+                                position: currentUser.position || '' */
             });
         }
     }, [currentUser]);
@@ -40,24 +53,49 @@ export default function Profile() {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsLoading(true);
 
-        // In a real application, you would make an API call here
-        // For now, we'll just update the Redux store
-        const updatedUser = {
-            ...currentUser,
-            ...formData
-        };
+        try {
+            // Make API call to update user
+            // Check if we have id or _id in the currentUser object
+            const userId = currentUser.id || currentUser._id;
 
-        dispatch(setCurrentUser(updatedUser));
-        setMessage({ type: 'success', text: 'Profile updated successfully!' });
-        setIsEditing(false);
+            if (!userId) {
+                throw new Error('User ID is missing. Please log in again.');
+            }
 
-        // Clear success message after 3 seconds
-        setTimeout(() => {
-            setMessage({ type: '', text: '' });
-        }, 3000);
+            await authService.updateUser(userId, {
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                email: formData.email
+            });
+
+            // Fetch updated user data
+            const response = await authService.getCurrentUser();
+            const responseData = response.data as UserProfileResponse;
+            const userData = responseData.user || responseData;
+
+            // Update Redux store with the updated user
+            dispatch(setCurrentUser(userData));
+
+            setMessage({ type: 'success', text: 'Profile updated successfully!' });
+            setIsEditing(false);
+
+            // Clear success message after 3 seconds
+            setTimeout(() => {
+                setMessage({ type: '', text: '' });
+            }, 3000);
+        } catch (error: any) {
+            console.error('Profile update error:', error);
+            setMessage({
+                type: 'danger',
+                text: error.response?.data?.message || error.message || 'Failed to update profile'
+            });
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     if (!currentUser) {
@@ -137,7 +175,7 @@ export default function Profile() {
                                 </Form.Group>
                             </Col>
 
-                            <Col md={6}>
+                            {/*                             <Col md={6}>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Phone</Form.Label>
                                     <Form.Control
@@ -148,36 +186,8 @@ export default function Profile() {
                                         disabled={!isEditing}
                                     />
                                 </Form.Group>
-                            </Col>
+                            </Col> */}
                         </Row>
-
-
-                        {/*  <Row>
-                            <Col md={6}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Department</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        name="department"
-                                        value={formData.department}
-                                        onChange={handleChange}
-                                        disabled={!isEditing}
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Position</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        name="position"
-                                        value={formData.position}
-                                        onChange={handleChange}
-                                        disabled={!isEditing}
-                                    />
-                                </Form.Group>
-                            </Col>
-                        </Row> */}
 
                         <div className="d-flex justify-content-end mt-4">
                             {isEditing ? (
@@ -185,8 +195,15 @@ export default function Profile() {
                                     <Button variant="secondary" className="me-2" onClick={() => setIsEditing(false)}>
                                         Cancel
                                     </Button>
-                                    <Button variant="primary" type="submit">
-                                        Save Changes
+                                    <Button variant="primary" type="submit" disabled={isLoading}>
+                                        {isLoading ? (
+                                            <>
+                                                <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+                                                <span className="ms-2">Saving...</span>
+                                            </>
+                                        ) : (
+                                            "Save Changes"
+                                        )}
                                     </Button>
                                 </>
                             ) : (

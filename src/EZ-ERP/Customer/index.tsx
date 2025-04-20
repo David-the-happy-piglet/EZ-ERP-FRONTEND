@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { customerService } from '../services/api';
 import type { Customer, Address } from '../types';
-import { Button, Table, Modal, Form, Alert } from 'react-bootstrap';
+import { Button, Table, Modal, Form, Alert, Spinner } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 
 export default function Customer() {
@@ -133,11 +133,17 @@ export default function Customer() {
     };
 
     if (loading) {
-        return <div className="container mt-4">Loading customers...</div>;
+        return (
+            <div className="h-100 d-flex justify-content-center align-items-center">
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading customers...</span>
+                </Spinner>
+            </div>
+        );
     }
 
     return (
-        <div className="container mt-4">
+        <div className="h-100">
             <h2 className="mb-4">Customers</h2>
 
             {error && <Alert variant="danger">{error}</Alert>}
@@ -157,57 +163,59 @@ export default function Customer() {
                 )}
             </div>
 
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Company Name</th>
-                        <th>Contact Name</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredCustomers.map((customer) => (
-                        <tr key={customer._id}>
-                            <td>{customer._id?.toString() || '-'}</td>
-                            <td>{customer.companyName}</td>
-                            <td>{customer.name}</td>
-                            <td>
-                                <Button
-                                    variant="info"
-                                    size="sm"
-                                    className="me-2"
-                                    onClick={() => {
-                                        setSelectedCustomer(customer);
-                                        setShowContactModal(true);
-                                    }}
-                                >
-                                    Contact Details
-                                </Button>
-                                {canManageCustomers && (
-                                    <>
-                                        <Button
-                                            variant="warning"
-                                            size="sm"
-                                            className="me-2"
-                                            onClick={() => handleShowModal(customer)}
-                                        >
-                                            Edit
-                                        </Button>
-                                        <Button
-                                            variant="danger"
-                                            size="sm"
-                                            onClick={() => handleDelete(customer._id)}
-                                        >
-                                            Delete
-                                        </Button>
-                                    </>
-                                )}
-                            </td>
+            <div className="table-responsive">
+                <Table striped bordered hover>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Company Name</th>
+                            <th>Contact Name</th>
+                            <th>Actions</th>
                         </tr>
-                    ))}
-                </tbody>
-            </Table>
+                    </thead>
+                    <tbody>
+                        {filteredCustomers.map((customer) => (
+                            <tr key={customer._id}>
+                                <td>{customer._id?.toString() || '-'}</td>
+                                <td>{customer.companyName}</td>
+                                <td>{customer.name}</td>
+                                <td>
+                                    <Button
+                                        variant="info"
+                                        size="sm"
+                                        className="me-2"
+                                        onClick={() => {
+                                            setSelectedCustomer(customer);
+                                            setShowContactModal(true);
+                                        }}
+                                    >
+                                        Contact Details
+                                    </Button>
+                                    {canManageCustomers && (
+                                        <>
+                                            <Button
+                                                variant="warning"
+                                                size="sm"
+                                                className="me-2"
+                                                onClick={() => handleShowModal(customer)}
+                                            >
+                                                Edit
+                                            </Button>
+                                            <Button
+                                                variant="danger"
+                                                size="sm"
+                                                onClick={() => handleDelete(customer._id)}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            </div>
 
             {/* Contact Details Modal */}
             <Modal show={showContactModal} onHide={() => setShowContactModal(false)}>

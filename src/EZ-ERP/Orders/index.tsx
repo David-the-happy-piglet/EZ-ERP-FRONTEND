@@ -27,7 +27,7 @@ export default function Orders() {
     }
 
     return (
-        <div className="container mt-10">
+        <div className="h-100">
             <OrderTable
                 onOrderClick={handleOrderClick}
                 onCreateOrder={handleCreateOrder}

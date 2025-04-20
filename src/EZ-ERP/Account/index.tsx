@@ -3,15 +3,15 @@ import { useState } from 'react';
 import Profile from './Profile';
 import PasswordChange from './PasswordChange';
 
-
 export default function Account() {
     const [activeTab, setActiveTab] = useState('profile');
 
     return (
-        <Container fluid className="account-container">
-            <Row>
-                <Col md={3} className="account-sidebar">
+        <div className="h-100">
 
+
+            <Row className="h-100">
+                <Col md={3} className="account-sidebar-new">
                     <Nav className="flex-column">
                         <Nav.Link
                             active={activeTab === 'profile'}
@@ -30,11 +30,11 @@ export default function Account() {
                         </Nav.Link>
                     </Nav>
                 </Col>
-                <Col md={9} className="account-content">
+                <Col md={9} className="account-content-new">
                     {activeTab === 'profile' && <Profile />}
                     {activeTab === 'password' && <PasswordChange />}
                 </Col>
             </Row>
-        </Container>
+        </div>
     );
 }

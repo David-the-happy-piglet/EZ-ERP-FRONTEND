@@ -172,8 +172,9 @@ export default function HumanResource() {
     };
 
     return (
-        <div className="container mt-4">
-            <h2 className="mb-4">User Management</h2>
+        <div className="h-100">
+            <br />
+
 
             {error && <Alert variant="danger" className="mb-3">{error}</Alert>}
 
@@ -209,37 +210,39 @@ export default function HumanResource() {
                 )}
             </div>
 
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>Username</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        {canManageUsers && <th>Actions</th>}
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredUsers.map(user => (
-                        <tr key={user._id}>
-                            <td>{user.username}</td>
-                            <td>{`${user.firstName} ${user.lastName}`}</td>
-                            <td>{user.email}</td>
-                            <td>{user.role}</td>
-                            {canManageUsers && (
-                                <td>
-                                    <Button variant="info" size="sm" className="me-2" onClick={() => handleShowModal(user)}>
-                                        Edit
-                                    </Button>
-                                    <Button variant="danger" size="sm" onClick={() => handleDelete(user._id)}>
-                                        Delete
-                                    </Button>
-                                </td>
-                            )}
+            <div className="table-responsive">
+                <Table striped bordered hover>
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            {canManageUsers && <th>Actions</th>}
                         </tr>
-                    ))}
-                </tbody>
-            </Table>
+                    </thead>
+                    <tbody>
+                        {filteredUsers.map(user => (
+                            <tr key={user._id}>
+                                <td>{user.username}</td>
+                                <td>{`${user.firstName} ${user.lastName}`}</td>
+                                <td>{user.email}</td>
+                                <td>{user.role}</td>
+                                {canManageUsers && (
+                                    <td>
+                                        <Button variant="info" size="sm" className="me-2" onClick={() => handleShowModal(user)}>
+                                            Edit
+                                        </Button>
+                                        <Button variant="danger" size="sm" onClick={() => handleDelete(user._id)}>
+                                            Delete
+                                        </Button>
+                                    </td>
+                                )}
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            </div>
 
             <Modal show={showModal} onHide={handleCloseModal} size="lg">
                 <Modal.Header closeButton>

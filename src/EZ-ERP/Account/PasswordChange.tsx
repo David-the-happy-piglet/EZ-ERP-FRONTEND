@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Form, Button, Card, Alert } from 'react-bootstrap';
+import { Form, Button, Card, Alert, Spinner } from 'react-bootstrap';
 import { authService } from '../services/api';
 
-export default function PasswordChange() {
+interface PasswordResponse {
+    message: string;
+}
 
+export default function PasswordChange() {
     const currentUser = useSelector((state: any) => state.accountReducer?.currentUser);
 
     const [formData, setFormData] = useState({
@@ -27,6 +30,7 @@ export default function PasswordChange() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setMessage({ type: '', text: '' });
 
         // Validate passwords
         if (formData.newPassword !== formData.confirmPassword) {
@@ -35,9 +39,16 @@ export default function PasswordChange() {
             return;
         }
 
+        // Validate password strength
+        if (formData.newPassword.length < 3) {
+            setMessage({ type: 'danger', text: 'New password must be at least 3 characters long' });
+            setIsSubmitting(false);
+            return;
+        }
+
         try {
-            // Call the API to change password
-            await authService.changePassword({
+            // Call the API to change password using session-based auth
+            const response = await authService.changePassword({
                 oldPassword: formData.oldPassword,
                 newPassword: formData.newPassword
             });
@@ -49,11 +60,12 @@ export default function PasswordChange() {
                 confirmPassword: ''
             });
 
-            setMessage({ type: 'success', text: 'Password changed successfully!' });
+            const responseData = response.data as PasswordResponse;
+            setMessage({ type: 'success', text: responseData.message || 'Password changed successfully!' });
         } catch (err: any) {
             setMessage({
                 type: 'danger',
-                text: err.response?.data?.message || 'Failed to change password'
+                text: err.response?.data?.message || 'Failed to change password. Please check your current password and try again.'
             });
         } finally {
             setIsSubmitting(false);
@@ -86,6 +98,7 @@ export default function PasswordChange() {
                                 onChange={handleChange}
                                 required
                                 placeholder="Enter your current password"
+                                autoComplete="current-password"
                             />
                         </Form.Group>
 
@@ -98,7 +111,12 @@ export default function PasswordChange() {
                                 onChange={handleChange}
                                 required
                                 placeholder="Enter your new password"
+                                autoComplete="new-password"
+                                minLength={6}
                             />
+                            <Form.Text className="text-muted">
+                                Password must be at least 3 characters long
+                            </Form.Text>
                         </Form.Group>
 
                         <Form.Group className="mb-4">
@@ -110,6 +128,7 @@ export default function PasswordChange() {
                                 onChange={handleChange}
                                 required
                                 placeholder="Confirm your new password"
+                                autoComplete="new-password"
                             />
                         </Form.Group>
 
@@ -119,7 +138,12 @@ export default function PasswordChange() {
                                 type="submit"
                                 disabled={isSubmitting}
                             >
-                                {isSubmitting ? 'Changing Password...' : 'Change Password'}
+                                {isSubmitting ? (
+                                    <>
+                                        <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+                                        <span className="ms-2">Changing Password...</span>
+                                    </>
+                                ) : 'Change Password'}
                             </Button>
                         </div>
                     </Form>

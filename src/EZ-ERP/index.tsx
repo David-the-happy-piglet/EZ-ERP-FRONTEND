@@ -16,23 +16,33 @@ import OrderEdit from "./Orders/orderEdit";
 
 export default function EZ_ERP() {
     return (
-        <div id="ezerp">
-            <WelcomeBadge />
-            <MainPageNav />
-            <Routes>
-                <Route path="Overview/*" element={<Overview />} />
-                <Route path="" element={<Navigate to="Overview" />} />
-                <Route path="Orders/*" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
-                <Route path="Orders/:orderNumber" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
-                <Route path="Orders/:orderNumber/edit" element={<ProtectedRoute><OrderEdit /></ProtectedRoute>} />
-                <Route path="Orders/new" element={<ProtectedRoute><OrderCreate /></ProtectedRoute>} />
-                <Route path="PM" element={<ProtectedRoute><ProjectManagement /></ProtectedRoute>} />
-                <Route path="PM/:orderNumber/Tasks" element={<ProtectedRoute><Tasks /></ProtectedRoute>} />
-                <Route path="Customers/*" element={<ProtectedRoute><Customer /></ProtectedRoute>} />
-                <Route path="Finance/*" element={<ProtectedRoute><Finance /></ProtectedRoute>} />
-                <Route path="Account/*" element={<ProtectedRoute><Account /></ProtectedRoute>} />
-                <Route path="HR/*" element={<ProtectedRoute><HumanResource /></ProtectedRoute>} />
-            </Routes>
+        <div id="ezerp" className="ezerp-container">
+            <div id="ezerp-header" className="ezerp-row">
+                <WelcomeBadge />
+            </div>
+
+            <div className="ezerp-main-container">
+
+                <MainPageNav />
+
+
+                <div id="ezerp-content" className="ezerp-main-content">
+                    <Routes>
+                        <Route path="Overview/*" element={<Overview />} />
+                        <Route path="" element={<Navigate to="Overview" />} />
+                        <Route path="Orders/*" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+                        <Route path="Orders/:orderNumber" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+                        <Route path="Orders/:orderNumber/edit" element={<ProtectedRoute><OrderEdit /></ProtectedRoute>} />
+                        <Route path="Orders/new" element={<ProtectedRoute><OrderCreate /></ProtectedRoute>} />
+                        <Route path="PM" element={<ProtectedRoute><ProjectManagement /></ProtectedRoute>} />
+                        <Route path="PM/:orderNumber/Tasks" element={<ProtectedRoute><Tasks /></ProtectedRoute>} />
+                        <Route path="Customers/*" element={<ProtectedRoute><Customer /></ProtectedRoute>} />
+                        <Route path="Finance/*" element={<ProtectedRoute><Finance /></ProtectedRoute>} />
+                        <Route path="Account/*" element={<ProtectedRoute><Account /></ProtectedRoute>} />
+                        <Route path="HR/*" element={<ProtectedRoute><HumanResource /></ProtectedRoute>} />
+                    </Routes>
+                </div>
+            </div>
         </div>
     )
 }

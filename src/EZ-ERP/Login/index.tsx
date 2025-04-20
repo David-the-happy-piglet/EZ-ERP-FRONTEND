@@ -42,9 +42,10 @@ export default function Login() {
     return (
         <div>
             <h1>Welcome to EZ-ERP</h1>
+            <hr />
             {error && <div className="text-danger mb-2">{error}</div>}
             <Form onSubmit={login}>
-                <h2>Please enter your username</h2>
+                <h3>Please enter your username</h3>
                 <Form.Control
                     value={credentials.username}
                     onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
@@ -52,7 +53,7 @@ export default function Login() {
                     placeholder="username"
                     className="mb-2" />
 
-                <h2>Please enter your password</h2>
+                <h3>Please enter your password</h3>
                 <Form.Control
                     value={credentials.password}
                     onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
@@ -65,8 +66,6 @@ export default function Login() {
                 <br />
                 <br />
                 <Button type="submit" id="erp-signin-btn" className="w-50 mb-2 bg-success">Login</Button>
-
-                <Button id="erp-signin-btn" className="w-50 mb-2 bg-warning">Signup</Button>
             </Form>
         </div>
     );

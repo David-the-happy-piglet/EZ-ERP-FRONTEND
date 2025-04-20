@@ -1,18 +1,24 @@
 import { Link, useLocation } from "react-router-dom";
-import { LiaCogSolid } from "react-icons/lia";
-import { ListGroup } from "react-bootstrap";
 
+import { ListGroup } from "react-bootstrap";
+import { MdManageAccounts } from "react-icons/md";
+import { FaMoneyBillTransfer } from "react-icons/fa6";
+import { MdGroups } from "react-icons/md";
+import { FaHandshake } from "react-icons/fa";
+import { FaWarehouse } from "react-icons/fa";
+import { MdDashboard } from "react-icons/md";
+import { FaChartGantt } from "react-icons/fa6";
 export default function MainPageNav() {
     const { pathname } = useLocation();
 
     const links = [
-        { label: "Overview", path: "/EZERP/Overview", icon: LiaCogSolid },
-        { label: "PM", path: "/EZERP/PM", icon: LiaCogSolid },
-        { label: "Orders", path: "/EZERP/Orders", icon: LiaCogSolid },
-        { label: "Customers", path: "/EZERP/Customers", icon: LiaCogSolid },
-        { label: "Finance", path: "/EZERP/Finance", icon: LiaCogSolid },
-        { label: "Account", path: "/EZERP/Account", icon: LiaCogSolid },
-        { label: "People", path: "/EZERP/HR", icon: LiaCogSolid }
+        { label: "Overview", path: "/EZERP/Overview", icon: MdDashboard },
+        { label: "PM", path: "/EZERP/PM", icon: FaChartGantt },
+        { label: "Orders", path: "/EZERP/Orders", icon: FaWarehouse },
+        { label: "Customers", path: "/EZERP/Customers", icon: FaHandshake },
+        { label: "Finance", path: "/EZERP/Finance", icon: FaMoneyBillTransfer },
+        { label: "Account", path: "/EZERP/Account", icon: MdManageAccounts },
+        { label: "People", path: "/EZERP/HR", icon: MdGroups }
     ];
 
     return (
