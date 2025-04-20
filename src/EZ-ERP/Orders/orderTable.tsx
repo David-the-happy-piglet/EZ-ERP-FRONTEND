@@ -61,7 +61,7 @@ export default function OrderTable({ onOrderClick, onCreateOrder, canManageOrder
     return (
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h2>Orders</h2>
+
                 {canManageOrders && (
                     <Button variant="primary" onClick={onCreateOrder}>
                         Create New Order

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Table, Button, Modal, Form, Alert, Row, Col } from 'react-bootstrap';
+import { Table, Button, Modal, Form, Alert, Row, Col, Card } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { authService } from '../services/api';
 
@@ -173,76 +173,80 @@ export default function HumanResource() {
 
     return (
         <div className="h-100">
-            <br />
+            <Card className="h-100">
+                <Card.Header>
+                    <h2 className="mb-0">User Management</h2>
+                </Card.Header>
+                <Card.Body className="overflow-auto">
+                    {error && <Alert variant="danger" className="mb-3">{error}</Alert>}
 
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                        <div className="d-flex gap-2">
+                            <Form.Control
+                                type="text"
+                                placeholder="Search by username, name, email, or role..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                style={{ width: '300px' }}
+                            />
+                            <Form.Select
+                                value={selectedRole}
+                                onChange={(e) => setSelectedRole(e.target.value as UserRole | 'ALL')}
+                                style={{ width: '200px' }}
+                            >
+                                <option value="ALL">All Roles</option>
+                                <option value={UserRole.ADMIN}>Admin</option>
+                                <option value={UserRole.MKT}>Marketing</option>
+                                <option value={UserRole.MACHINING}>Machining</option>
+                                <option value={UserRole.QC}>Quality Control</option>
+                                <option value={UserRole.CHEMIST}>Chemist</option>
+                                <option value={UserRole.FINANCE}>Finance</option>
+                                <option value={UserRole.HR}>Human Resources</option>
+                                <option value={UserRole.GUEST}>Guest</option>
+                            </Form.Select>
+                        </div>
+                        {canManageUsers && (
+                            <Button variant="primary" onClick={() => handleShowModal()}>
+                                Add New User
+                            </Button>
+                        )}
+                    </div>
 
-            {error && <Alert variant="danger" className="mb-3">{error}</Alert>}
-
-            <div className="d-flex justify-content-between align-items-center mb-3">
-                <div className="d-flex gap-2">
-                    <Form.Control
-                        type="text"
-                        placeholder="Search by username, name, email, or role..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        style={{ width: '300px' }}
-                    />
-                    <Form.Select
-                        value={selectedRole}
-                        onChange={(e) => setSelectedRole(e.target.value as UserRole | 'ALL')}
-                        style={{ width: '200px' }}
-                    >
-                        <option value="ALL">All Roles</option>
-                        <option value={UserRole.ADMIN}>Admin</option>
-                        <option value={UserRole.MKT}>Marketing</option>
-                        <option value={UserRole.MACHINING}>Machining</option>
-                        <option value={UserRole.QC}>Quality Control</option>
-                        <option value={UserRole.CHEMIST}>Chemist</option>
-                        <option value={UserRole.FINANCE}>Finance</option>
-                        <option value={UserRole.HR}>Human Resources</option>
-                        <option value={UserRole.GUEST}>Guest</option>
-                    </Form.Select>
-                </div>
-                {canManageUsers && (
-                    <Button variant="primary" onClick={() => handleShowModal()}>
-                        Add New User
-                    </Button>
-                )}
-            </div>
-
-            <div className="table-responsive">
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>Username</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            {canManageUsers && <th>Actions</th>}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredUsers.map(user => (
-                            <tr key={user._id}>
-                                <td>{user.username}</td>
-                                <td>{`${user.firstName} ${user.lastName}`}</td>
-                                <td>{user.email}</td>
-                                <td>{user.role}</td>
-                                {canManageUsers && (
-                                    <td>
-                                        <Button variant="info" size="sm" className="me-2" onClick={() => handleShowModal(user)}>
-                                            Edit
-                                        </Button>
-                                        <Button variant="danger" size="sm" onClick={() => handleDelete(user._id)}>
-                                            Delete
-                                        </Button>
-                                    </td>
-                                )}
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
-            </div>
+                    <div className="table-responsive">
+                        <Table striped bordered hover>
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    {canManageUsers && <th>Actions</th>}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredUsers.map(user => (
+                                    <tr key={user._id}>
+                                        <td>{user.username}</td>
+                                        <td>{`${user.firstName} ${user.lastName}`}</td>
+                                        <td>{user.email}</td>
+                                        <td>{user.role}</td>
+                                        {canManageUsers && (
+                                            <td>
+                                                <Button variant="info" size="sm" className="me-2" onClick={() => handleShowModal(user)}>
+                                                    Edit
+                                                </Button>
+                                                <Button variant="danger" size="sm" onClick={() => handleDelete(user._id)}>
+                                                    Delete
+                                                </Button>
+                                            </td>
+                                        )}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    </div>
+                </Card.Body>
+            </Card>
 
             <Modal show={showModal} onHide={handleCloseModal} size="lg">
                 <Modal.Header closeButton>

@@ -17,9 +17,9 @@ import OrderEdit from "./Orders/orderEdit";
 export default function EZ_ERP() {
     return (
         <div id="ezerp" className="ezerp-container">
-            <div id="ezerp-header" className="ezerp-row">
-                <WelcomeBadge />
-            </div>
+
+            <WelcomeBadge />
+
 
             <div className="ezerp-main-container">
 

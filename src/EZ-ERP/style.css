@@ -22,38 +22,45 @@
     width: 100%;
     flex-direction: row;
     flex-wrap: nowrap;
-    padding-left: 50px;
+    padding-left: 0px;
 }
 
 .ezerp-sidebar {
-    width: 0px;
-
+    width: 180px;
     height: calc(100vh - 70px);
     position: sticky;
     top: 70px;
-
 }
 
 .ezerp-main-content {
     flex: 1;
-    padding: 20px;
+    padding: 0px;
     overflow-y: auto;
     background-color: #fff;
     transition: all 0.3s ease;
+    margin-left: 0px;
 }
 
 /* Responsive adjustments for different screen sizes */
 @media (max-width: 1200px) {
     .ezerp-sidebar {
-        width: 10%;
+        width: 180px;
         min-width: 180px;
+    }
+
+    .ezerp-main-nav {
+        width: 180px;
     }
 }
 
 @media (max-width: 992px) {
     .ezerp-sidebar {
-        width: 10%;
+        width: 160px;
         min-width: 160px;
+    }
+
+    .ezerp-main-nav {
+        width: 160px;
     }
 }
 
@@ -101,12 +108,14 @@ body * {
     position: fixed;
     top: 0;
     left: 0;
-
+    width: 180px;
 }
 
 .ezerp-main-nav>.list-group-item {
     border-radius: 0;
     border-bottom: 1px solid #ccc;
+    padding: 12px 15px;
+    width: 100%;
 }
 
 .ezerp-main-nav>.list-group-item:hover {
@@ -182,7 +191,7 @@ body * {
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-left: 100px;
+    margin-left: 0px;
 }
 
 .profile-container,

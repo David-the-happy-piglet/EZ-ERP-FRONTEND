@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { customerService } from '../services/api';
 import type { Customer, Address } from '../types';
-import { Button, Table, Modal, Form, Alert, Spinner } from 'react-bootstrap';
+import { Button, Table, Modal, Form, Alert, Spinner, Card } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 
 export default function Customer() {
@@ -144,78 +144,83 @@ export default function Customer() {
 
     return (
         <div className="h-100">
-            <h2 className="mb-4">Customers</h2>
+            <Card className="h-100">
+                <Card.Header>
+                    <h2 className="mb-0">Customers</h2>
+                </Card.Header>
+                <Card.Body className="overflow-auto">
+                    {error && <Alert variant="danger">{error}</Alert>}
 
-            {error && <Alert variant="danger">{error}</Alert>}
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                        <Form.Control
+                            type="text"
+                            placeholder="Search by company name or contact name..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            style={{ width: '300px' }}
+                        />
+                        {canManageCustomers && (
+                            <Button variant="primary" onClick={() => handleShowModal()}>
+                                Add New Customer
+                            </Button>
+                        )}
+                    </div>
 
-            <div className="d-flex justify-content-between align-items-center mb-3">
-                <Form.Control
-                    type="text"
-                    placeholder="Search by company name or contact name..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    style={{ width: '300px' }}
-                />
-                {canManageCustomers && (
-                    <Button variant="primary" onClick={() => handleShowModal()}>
-                        Add New Customer
-                    </Button>
-                )}
-            </div>
-
-            <div className="table-responsive">
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Company Name</th>
-                            <th>Contact Name</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredCustomers.map((customer) => (
-                            <tr key={customer._id}>
-                                <td>{customer._id?.toString() || '-'}</td>
-                                <td>{customer.companyName}</td>
-                                <td>{customer.name}</td>
-                                <td>
-                                    <Button
-                                        variant="info"
-                                        size="sm"
-                                        className="me-2"
-                                        onClick={() => {
-                                            setSelectedCustomer(customer);
-                                            setShowContactModal(true);
-                                        }}
-                                    >
-                                        Contact Details
-                                    </Button>
-                                    {canManageCustomers && (
-                                        <>
+                    <div className="table-responsive">
+                        <Table striped bordered hover>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Company Name</th>
+                                    <th>Contact Name</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredCustomers.map((customer) => (
+                                    <tr key={customer._id}>
+                                        <td>{customer._id?.toString() || '-'}</td>
+                                        <td>{customer.companyName}</td>
+                                        <td>{customer.name}</td>
+                                        <td>
                                             <Button
-                                                variant="warning"
+                                                variant="info"
                                                 size="sm"
                                                 className="me-2"
-                                                onClick={() => handleShowModal(customer)}
+                                                onClick={() => {
+                                                    setSelectedCustomer(customer);
+                                                    setShowContactModal(true);
+                                                }}
                                             >
-                                                Edit
+                                                Contact Details
                                             </Button>
-                                            <Button
-                                                variant="danger"
-                                                size="sm"
-                                                onClick={() => handleDelete(customer._id)}
-                                            >
-                                                Delete
-                                            </Button>
-                                        </>
-                                    )}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
-            </div>
+                                            {canManageCustomers && (
+                                                <>
+                                                    <Button
+                                                        variant="warning"
+                                                        size="sm"
+                                                        className="me-2"
+                                                        onClick={() => handleShowModal(customer)}
+                                                    >
+                                                        Edit
+                                                    </Button>
+                                                    <Button
+                                                        variant="danger"
+                                                        size="sm"
+                                                        onClick={() => handleDelete(customer._id)}
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                </>
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    </div>
+                </Card.Body>
+            </Card>
 
             {/* Contact Details Modal */}
             <Modal show={showContactModal} onHide={() => setShowContactModal(false)}>
