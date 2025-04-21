@@ -1,4 +1,4 @@
-import { Container, Row, Col, Nav, Card } from 'react-bootstrap';
+import { Row, Col, Nav, Card } from 'react-bootstrap';
 import { useState } from 'react';
 import Profile from './Profile';
 import PasswordChange from './PasswordChange';
