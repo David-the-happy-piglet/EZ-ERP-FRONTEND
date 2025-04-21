@@ -34,7 +34,7 @@ api.interceptors.response.use(
         console.error("Response error:", error.response?.data || error);
         if (error.response?.status === 401) {
             // Handle unauthorized access
-            window.location.href = '/Login';
+            window.location.href = '/#/Login';
         }
         return Promise.reject(error);
     }
