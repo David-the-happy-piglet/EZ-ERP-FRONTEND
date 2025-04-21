@@ -5,7 +5,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
     const currentUser = useSelector((state: any) => state.accountReducer?.currentUser);
 
     if (!currentUser) {
-        return <Navigate to="/Login" replace />;
+        return <Navigate to="/login" replace />;
     }
 
     return <>{children}</>;

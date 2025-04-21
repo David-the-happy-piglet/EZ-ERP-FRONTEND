@@ -16,7 +16,7 @@ function App() {
             {/*             
             <Route path="/EZERP/Overview" element={<EZ_ERP />} /> */}
             <Route path="/Login" element={<Login />} />
-            <Route path="EZERP/*" element={<EZ_ERP />} />
+            <Route path="/EZERP/*" element={<EZ_ERP />} />
           </Routes>
         </div>
       </Provider>
